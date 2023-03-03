@@ -1,0 +1,85 @@
+1. Is JSX mandatory for react?
+
+->JSX is not a requirement for using React. Using React without JSX is especially convenient when you don’t want
+ to set up compilation in your build environment.
+
+2.Is ES6 mendatory for react?
+
+-> ES6 is the standardization of javascript for making code more readable and more accessible.
+   If we don't use ES6 in react, there is an alternative to perform. 
+   We use create-react-class instead of ES6.
+
+3. How to write comments in JSX?
+
+-> {/* This is a JSX comment */} 
+   JSX comments begin and end with curly braces {}.
+   Followed by the opening curly brace is a forward slash and an asterisk. After that is the comment and lastly, an asterisk, a forward slash and the closing curly brace.
+
+4. What is <React.fragment> </React.fragment> and <></>?
+
+->  The only difference between them is that the shorthand version does not support the key attribute.
+
+5.What is Virtual Dom ?
+
+->  React uses Virtual DOM exists which is like a lightweight copy of the actual DOM(a virtual representation of the DOM). So for every object that exists in the original DOM, there is an object for that in React Virtual DOM. It is exactly the same, but it does not have the power to directly change the layout of the document. Manipulating DOM is slow, but manipulating Virtual DOM is fast as nothing gets drawn on the screen. So each time there is a change in the state of our application, the virtual DOM gets updated first instead of the real DOM. You may still wonder, “Aren’t we doing the same thing again and doubling our work? How can this be faster?” Read below to understand how things will be faster using virtual DOM.
+
+   How Virtual DOM actually make things faster: When anything new is added to the application, a virtual DOM is created and it is represented as a tree. Each element in the application is a node in this tree. So, whenever there is a change in the state of any element, a new Virtual DOM tree is created. This new Virtual DOM tree is then compared with the previous Virtual DOM tree and make a note of the changes. After this, it finds the best possible ways to make these changes to the real DOM. Now only the updated elements will get rendered on the page again.
+
+
+6. what is recociliation in react ?
+
+-> In react, everything is treated as a component be it a functional component or class component. A component can contain a state. Each time we change something in our JSX file or let’s put it in simple terms, whenever the state of any component is changed react updates its Virtual DOM tree. Though it may sound that it is ineffective but the cost is not much significant as updating the virtual DOM doesn’t take much time. React maintains two Virtual DOM at each time, one contains the updated Virtual DOM and one which is just the pre-update version of this updated Virtual DOM. Now it compares the pre-update version with the updated Virtual DOM and figures out what exactly has changed in the DOM like which components have been changed. This process of comparing the current Virtual DOM tree with the previous one is known as ‘diffing’. Once React finds out what exactly has changed then it updates those objects only, on real DOM. React uses something called batch updates to update the real DOM. It just means that the changes to the real DOM are sent in batches instead of sending any update for a single change in the state of a component. We have seen that the re-rendering of the UI is the most expensive part and React manages to do this most efficiently by ensuring that the Real DOM receives batch updates to re-render the UI. This entire process of transforming changes to the real DOM is called
+
+
+7. what is React fibre ??
+
+->  React Fiber: A fiber in a react is just a plain JavaScript object with some properties. The current react reconciler, the fiber reconciler is named after this object and is the default reconciler since react version 16.
+
+React fiber is a complete rewrite of react that fixes a few long-standing issues and offers incredible and offers opportunities heading into the future.
+
+
+Goals of React Fiber: Fiber focuses on animations and responsiveness. It has the ability to split work into chunks and prioritize tasks. We can pause work and come back to it later. We can also reuse previously completed work or maybe abort it if it is not needed. As opposed to the old React reconciler, it is asynchronous.
+
+Old reconciler: Stack – Now, in order to truly understand the power of fiber, let’s briefly talk about the old. The old reconciler is the Stack reconciler. Stack was synchronous and it has this name because it worked like a stack. You could add items, and remove items, but it had to work until the stack was empty. It couldn’t be interrupted. Let’s think of an example that uses the stack reconciler.
+
+Imagine we have the text field. Ideally, we would like to always be able to type into the text field without any delay. If there is only the text field naturally that’s not a problem, but what if there is something else happening? Suppose there is a network request happening in the background, that results in some element being rendered. If we type into the text field while those elements are being rendered, we will experience a delay, because the stack reconciler is in the middle of processing those elements. Now it should be clear where the problem was stack was synchronous and with that come to some major limitations.
+
+Features of Fiber: These are some features listed below.
+
+While fiber comes with different significant performance increases, it’s not really about them. It’s about the fundamental way React works.
+Fiber makes React faster but it makes it smarter as well.
+Fiber also improves the development of react and makes it so adding a new feature is significantly easier.
+How to React fiber works?
+
+Now, let’s look at the implementation itself. At the very start, we mentioned that fiber is a just plain javascript object with some properties. The core underlying idea is that the fiber also represents a unit of work.
+
+React first processes those fibers, those units of work and we end with something called finishwork(). Afterward, it commits this work resulting in visible changes in the DOM. This all happens in two phases. The first is the render phase and it is during this phase that the processing happens. The second phase is the commit phase. Now, let’s talk about them in order.
+
+Render phase: This phase is asynchronous. During this phase, React does all sorts of asynchronous things behind the scenes that aren’t visible to the user. With it being asynchronous come increased opportunities that I already briefly spoke about. React can prioritize tasks. Pause some work or maybe even discard it and so on. I previously said that during this phase, React processes all of the fibers, which represent the unit of work. During this phase, internal functions like beginWork() and completeWork() is being called. Those process all of the fiber and we will back to them later.
+
+Commit phase: During this phase, it is the function commitWork() that is being called. This phase is synchronous and cannot be interrupted.
+
+Whenever React processes a fiber it either handles the work directly or schedules it for the future. Using the feature called time-slicing React can split work into chunks. If some work has a very high priority like animation; React can schedule it in such a way that it gets handled as soon as possible, but if some work has low priority, for example, a network request React can simply delay it for as long as it needs. It uses a function requestAnimationFrame() and requestIdleCallback() to do that. 
+
+request AnimationFrame() – Schedule for high priority functions to be called on the next animation frame. 
+
+requestIdleCallback() – Schedules a low priority function to be called during an idle period.
+
+
+8. Why we need keys in React? When do we need keys in React?
+
+-> A “key” is a special string attribute you need to include when creating lists of elements in React. Keys are used in React to identify which items in the list are changed, updated, or deleted. In other words, we can say that keys are used to give an identity to the elements in the lists. The next thing that comes to mind is that what should be good to be chosen as key for the items in lists. It is recommended to use a string as a key that uniquely identifies the items in the list. Below example shows a list with string keys:  
+
+const numbers = [ 1, 2, 3, 4, 5 ];
+ 
+const updatedNums = numbers.map((number)=>{
+return <li key={anykey}>{number} </li>;
+}); 
+
+9. Can we use index as keys in react?
+
+-> Assigning indexes as keys are highly discouraged because if the elements of the arrays get reordered in the future then it will get confusing for the developer as the keys for the elements will also change.
+
+10. What is a Config driven UI?
+
+->   Configuration-driven development (CDD) is a software development approach that focuses on using external configuration data and files to drive the development process and to control the behavior and the functionality of the software.
